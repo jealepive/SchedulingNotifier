@@ -35,7 +35,7 @@ public class Startup : FunctionsStartup
         builder.Services.AddSingleton(_ =>
         {
             using var browserFetcher = new BrowserFetcher(new BrowserFetcherOptions { Path = Path.GetTempPath() });
-            browserFetcher.DownloadAsync(BrowserFetcher.DefaultChromiumRevision).Wait();
+            browserFetcher.DownloadAsync(BrowserFetcher.DefaultChromiumRevision).GetAwaiter().GetResult();
             return new BrowserSettings { ExecutablePath = browserFetcher.GetExecutablePath(BrowserFetcher.DefaultChromiumRevision) };
         });
 
