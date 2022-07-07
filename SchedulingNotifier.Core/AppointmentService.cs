@@ -75,7 +75,7 @@ public class AppointmentService : IAppointmentService
 
         if (!currentPageContent.Contains("no hay citas disponibles", StringComparison.OrdinalIgnoreCase))
         {
-            var emailSubject = "Actualizacion de Estado - Citas de Pasaporte";
+            var emailSubject = $"Citas disponibles - Oficina {office}";
             var emailContent = $"La Oficina {office} ya tiene CITAS DISPONIBLES. Puede ingresar a { _settings.MainUrl}{ _settings.AppointmentUrlPath}";
             await _emailService.Send(_settings.SmtpUser, "annatorresaranis@gmail.com", "jealepive@outlook.com", emailSubject, emailContent).ConfigureAwait(false);
             _logger.LogInformation($"Email sent - Found available appointments for Office {office}!");
