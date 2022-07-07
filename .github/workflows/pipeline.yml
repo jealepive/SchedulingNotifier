@@ -3,8 +3,6 @@ name: Deploy Function App on Linux environment
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
     
 env:
   AZURE_FUNCTIONAPP_NAME: fapp-personal-dev-linux  # set this to your application's name
