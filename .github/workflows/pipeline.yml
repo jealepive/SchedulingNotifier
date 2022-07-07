@@ -3,6 +3,8 @@ name: Deploy Function App on Linux environment
 on:
   push:
     branches: [ "main" ]
+  pull_request:
+    branches: ["main"]
     
 env:
   AZURE_FUNCTIONAPP_NAME: fapp-personal-dev-linux  # set this to your application's name
@@ -29,11 +31,24 @@ jobs:
         pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         dotnet build --configuration Release --output ./output
         popd
-        
+    
+    - name: 'Azure CLI Login'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
     - name: 'Run Azure Functions Action'
       uses: Azure/functions-action@v1.4.6
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
         package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+        
+    - name: Azure CLI script
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az logout
+          az cache purge
+          az account clear
 
+    
